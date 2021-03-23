@@ -1,0 +1,101 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+h1, h2, h3 {
+    font-family: "Montserrat", serif;
+}
+
+.container {
+    width: 375px;
+    margin: auto;
+}
+
+.login {
+    padding: 15px;
+}
+
+.login .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.menu {
+    padding: 10px;
+}
+
+.menu .welcome {
+    font-size: 1.3em;
+}
+
+.transfer {
+    padding: 10px;
+    background: #ffffff;
+    /* color: #ffffff; */
+}
+
+.admin {
+    padding: 10px;
+    background: #ffffff;
+    /* color: #ffffff; */
+}
+
+.my-password {
+    padding: 10px;
+    background: #ffffff;
+    color: #ffffff;
+}
+
+.print-check {
+    padding: 10px;
+    background: #ffffff;
+    /* color: #ffffff; */
+}
+
+.account-summary {
+    padding: 10px;
+    background: #ffffff;
+    /* color: #ffffff; */
+}
+
+.print-check-container {
+    display: none;
+}
+
+.print-check-sample {
+    width: 960px;
+    margin: 20px;
+    padding: 20px;
+    border: black 1px solid;
+    background: #ffffff;
+}
+
+@media print {
+    .container {
+        display: none;
+    }
+    .print-check-container {
+        display: block;
+    }
+}
+
+
+
+
+
+

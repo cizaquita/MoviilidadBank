@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Moviilidad Bank</title>
+
+    <link rel="icon" href="images/favicon.ico">
+
+    <!-- Fonts -->
+    <!-- Reference: https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <!-- Reference: https://fonts.google.com/specimen/Roboto?selection.family=Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- transfer css -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- jquery & bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="card-deck container">
+
+    <section class="login card bg-light">
+        <header class="text-center">
+            <img class="mt-5 mb-4" src="images/image-bank.png" alt="" width="80" height="80">
+            <h3 class="mb-3">Moviilidad Bank</h3>
+        </header>
+
+        <div class="alert alert-danger" id="invalidLogin" style="display: none;">Correo o contraseña incorrectos.</div>
+
+        <form class="needs-validation" novalidate onsubmit="return false;">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Usuario" required
+                   autofocus onfocus="dismissibleAlert();">
+            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required
+                   onfocus="dismissibleAlert();">
+            <button type="submit" class="btn btn-lg btn-outline-success btn-block" id="login">Iniciar Sesión</button>
+        </form>
+        <p class="mt-5 text-muted text-center"><span id="year"></span> Moviilidad Bank - Mi Primer Banco</p>
+    </section>
+
+    <!-- Menu -->
+    <section class="menu card bg-light" style="display: none;">
+        <header class="text-center">
+            <img class="mt-5 mb-4" src="images/image-bank.png" alt="" width="80" height="80">
+            <h3 class="mb-3">Moviilidad Bank</h3>
+        </header>
+
+        <p class="welcome text-center">Bienvenido <span id="user-name">Nombre</span>!</p>
+
+        <nav class="navbar">
+            <button class="btn btn-lg btn-outline-success btn-block" type="button" id="nav-account-summary">Resumen de cuenta
+            </button>
+            <button class="btn btn-lg btn-outline-success btn-block" type="button" id="nav-transfer-funds">Transferencias
+            </button>
+            <button class="btn btn-lg btn-outline-success btn-block" type="button" id="nav-change-password">Cambiar contraseña
+            </button>
+            <button class="btn btn-lg btn-outline-danger btn-block" type="button" id="nav-exit">Salir</button>
+        </nav>
+
+        <p class="mt-5 text-muted text-center"><span id="year"></span> Moviilidad Bank - Mi Primer Banco</p>
+    </section>
+
+    <!-- transfer -->
+    <section class="transfer card" style="display: none;">
+        <div class="text-left mt-3 mb-3">
+            <button type="button" class="btn btn-sm btn-outline-dark nav-back">< volver</button>
+        </div>
+
+        <h4 class="text-center">Transferencias</h4>
+        <div id="success-balance-transfer" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="display: none">
+            Saldo transferido!
+        </div>
+
+        <form class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="tran-from">Desde:</label>
+                <select name="from" class="form-control" id="tran-from" required>
+                    <option value="">Seleccione...</option>
+                    <option value="chequing">Corriente</option>
+                    <option value="saving">Ahorros</option>
+                </select>
+                <div class="text-danger" style="display: none;" id="tranFromAlert">Por favor, seleccione una opción.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="tran-to">A:</label>
+                <select name="to" class="form-control" id="tran-to" required disabled>
+                    <option value="">Seleccione...</option>
+                    <option value="chequing">Corriente</option>
+                    <option value="saving">Ahorros</option>
+                    <option value="other">Terceros</option>
+                </select>
+                <select name="other-to" class="form-control mt-2" id="other-to" style="display: none;">
+                    <option value="">Seleccione...</option>
+                </select>
+                <div class="text-danger" style="display: none;" id="tranToAlert">Por favor, seleccione una opción.</div>
+                <div class="text-danger" style="display: none;" id="otherToAlert">Por favor, selecciona una cuenta.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="current-balance">Saldo actual:</label>
+                <input type="text" class="form-control text-right" id="current-balance-view"
+                       value="0" disabled>
+                <input type="hidden" id="current-balance" value="0"
+                       disabled>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="credit-total">Crédito total:</label>
+                    <input type="text" class="form-control text-right" id="credit-total" value="0"
+                           disabled>
+                    <div class="valid-tooltip">
+                        Correcto!
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="available">Crédito disponible:</label>
+                    <input type="text" class="form-control text-right" id="available" value="0"
+                           disabled>
+                    <div class="valid-tooltip">
+                        Correcto!
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Cantidad:</label>
+                <input name="amount" class="form-control text-right" type="number" id="amount" value="0" required
+                       disabled>
+                <div class="text-danger" style="display: none;" id="amountAlert">Por favor, ingrese una cantidad.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="final-balance">Saldo final:</label>
+                <input class="form-control text-right" type="text" id="final-balance" value="0"
+                       disabled>
+            </div>
+
+            <button type="button" class="btn btn-lg btn-outline-success btn-block mt-4" id="submit">Enviar</button>
+
+        </form>
+
+        <!-- <div class="text-right">
+            <button type="button" class="btn btn-sm btn-secondary mt-5" id="showAdmin">Transferir cuenta</button>
+        </div> -->
+    </section>
+
+    <!-- admin -->
+    <section class="card admin" style="display: none;">
+        <h4 class="text-center">Admministración</h4>
+        <div id="success-account-transfer" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="display: none">
+            Cuenta transferida!
+        </div>
+
+        <form class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="tran-source">Origen:</label>
+                <select name="source" class="form-control" id="tran-source" required>
+                    <option value="">Seleccione...</option>
+                </select>
+                <div class="text-danger" style="display: none;" id="tranSourceAlert">Por favor, seleccione una opción.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="source-initial-balance">Saldo inicial:</label>
+                <input class="form-control text-right" type="text" id="source-initial-balance"
+                       value="0" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="source-actual-balance">Saldo actual:</label>
+                <input class="form-control text-right" type="text" id="source-actual-balance"
+                       value="0" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="tran-target">Destino:</label>
+                <select name="to" class="form-control" id="tran-target" required disabled>
+                    <option value="">Seleccione...</option>
+                </select>
+                <div class="text-danger" style="display: none;" id="tranTargetAlert">Por favor, seleccione una opción.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="target-initial-balance">Saldo inicial:</label>
+                <input class="form-control text-right" type="text" id="target-initial-balance"
+                       value="0" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="target-actual-balance">Saldo actual:</label>
+                <input class="form-control text-right" type="text" id="target-actual-balance"
+                       value="0" disabled>
+            </div>
+
+
+            <div class="form-group">
+                <label for="admin-amount">Cantidad:</label>
+                <input name="admin-amount" class="form-control text-right" type="number" id="admin-amount" value="0"
+                       required disabled>
+                <div class="text-danger" style="display: none;" id="adminAmountAlert">Por favor, ingrese una cantidad.</div>
+            </div>
+
+            <button type="button" class="btn btn-lg btn-outline-success btn-block mt-4" id="adminSubmit">Enviar</button>
+
+        </form>
+    </section>
+
+    <!-- change password -->
+    <section class="my-password card" style="display: none;">
+        <div class="text-left mt-3 mb-3">
+            <button type="button" class="btn btn-sm btn-outline-dark nav-back">< volver</button>
+        </div>
+        <h4 class="text-center mb-3">Cambiar contraseña</h4>
+
+        <div id="success-password-alert" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="display: none">
+            Contraseña actualizada!
+        </div>
+
+        <div id="fail-password-alert" class="alert alert-danger alert-dismissible fade show" role="alert"
+             style="display: none">
+            Contraseña actual incorrecta!
+        </div>
+
+        <div id="fail-new-password-alert" class="alert alert-danger alert-dismissible fade show" role="alert"
+             style="display: none">
+            Contraseña nueva inválida!
+        </div>
+
+        <form class="needs-validation" novalidate onsubmit="return false;">
+            <div class="form-group">
+                <input type="password" name="old-password" id="old-password" class="form-control"
+                       placeholder="Actual" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="new-password" id="new-password" class="form-control"
+                       placeholder="Nueva" required>
+            </div>
+            <button type="submit" class="btn btn-lg btn-outline-success btn-block" id="change-password">Guardar</button>
+        </form>
+    </section>
+
+    <!-- Account Summary -->
+    <section class="account-summary card" style="display: none;">
+        <div class="text-left mt-3 mb-3">
+            <button type="button" class="btn btn-sm btn-outline-dark nav-back">< volver</button>
+        </div>
+        <h4 class="text-center mb-3">Resumen de cuenta</h4>
+
+        <div class="form-group mb-3">
+            <label for="summary-account">Seleccione cuenta:</label>
+            <select name="to" class="form-control" id="summary-account">
+                <option value="">Seleccione...</option>
+                <option value="chequing">Corriente</option>
+                <option value="saving">Ahorros</option>
+            </select>
+        </div>
+
+        <table class="table table-striped table-dark" id="summary-list">
+            <thead>
+            <tr class="text-center">
+                <th scope="col">Fecha</th>
+                <th scope="col"><span class="text-success">Ingresos</span> / <span class="text-danger">Egresos</span></th>
+                <th scope="col" class="text-info">Saldo</th>
+            </tr>
+            </thead>
+        </table>
+    </section>
+
+</div>
+
+<!-- check print section -->
+<div class="print-check-container">
+    <div class="print-check-sample">
+        <div class="row mb-4">
+            <div class="col-9">
+                <p class="mb-0" id="cp-name">Nombre</p>
+                <p class="mb-0" id="cp-address1">Dirección</p>
+                <p class="mb-0" id="cp-address2">Ciudad, Departamento, Código postal</p>
+            </div>
+            <div class="col-3">
+                <p class="mb-1 h4 text-right">001</p>
+                <p class="mb-0 w-100 border-dark border-bottom">Fecha: <span id="cp-date"></span></p>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-2">
+                <small class="">PAGAR A</small>
+            </div>
+            <div class="col-7">
+                <div class="border-dark border-bottom h-100 h4 p-1 d-flex align-items-end" id="cp-order"></div>
+            </div>
+            <div class="col-3">
+                <div class="border border-dark h-100 bg-light h4 p-1 d-flex align-items-end">$ &nbsp;
+                    <span id="cp-digit-amount">0</span></div>
+            </div>
+        </div>
+
+        <div class="border-dark border-bottom text-right mb-4"><span class="h4" id="cp-amount"></span> &nbsp;<small>
+            PESOS
+        </small>
+        </div>
+
+        <div class=" mb-2">
+            <p class="mb-0 text-muted">MOVIILIDAD BANK</p>
+        </div>
+
+        <div> :123456789 :12345678900: 1001</div>
+    </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+<script src="js/transfer.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/password.js"></script>
+<script src="js/summary.js"></script>
+
+<script>
+    document.getElementById("year").innerHTML = new Date().getFullYear();
+</script>
+</body>
+</html>
